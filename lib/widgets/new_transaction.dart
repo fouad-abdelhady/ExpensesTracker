@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addTransaction;
@@ -45,11 +46,22 @@ class _NewTransactionState extends State<NewTransaction> {
               keyboardType: TextInputType.number,
               onSubmitted: (_) => _submitTransaction(),
             ),
-            TextButton(
+            Container(
+              height: 80,
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Text(
+                    DateFormat.yMMMd().format(DateTime.now()),
+                    style: Theme.of(context).textTheme.headline5,
+                  )),
+                  TextButton(onPressed: () {}, child: Text('Select Date'))
+                ],
+              ),
+            ),
+            ElevatedButton(
               onPressed: () => _submitTransaction(),
               child: Text('Add Expenses'),
-              style:
-                  TextButton.styleFrom(primary: Theme.of(context).primaryColor),
             )
           ],
         ),

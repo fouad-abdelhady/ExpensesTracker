@@ -21,11 +21,27 @@ class App extends StatelessWidget {
                 headline6: TextStyle(
                     fontFamily: 'OpenSans',
                     fontSize: 18,
+                    fontWeight: FontWeight.bold),
+                headline5: TextStyle(
+                    fontFamily: 'OpenSans',
+                    fontSize: 15,
                     fontWeight: FontWeight.bold)),
+            textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                    primary: Colors.purple,
+                    textStyle: TextStyle(
+                        fontFamily: 'OpenSans',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16))),
+            elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ElevatedButton.styleFrom(
+              primary: Colors.purple,
+            )),
             appBarTheme: AppBarTheme(
                 textTheme: ThemeData.light().textTheme.copyWith(
-                    headline6:
-                        TextStyle(fontFamily: 'OpenSans', fontSize: 20)))),
+                      headline6:
+                          TextStyle(fontFamily: 'OpenSans', fontSize: 20),
+                    ))),
         home: HomePage());
   }
 }
