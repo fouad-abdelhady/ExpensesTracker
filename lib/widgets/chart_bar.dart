@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChartBar extends StatelessWidget {
   String _dayLable;
@@ -9,6 +10,10 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color barColor =
+        DateFormat.E().format(DateTime.now()).toString() != this._dayLable
+            ? Theme.of(context).primaryColor
+            : Theme.of(context).accentColor;
     return Column(
       children: [
         SizedBox(
@@ -37,8 +42,7 @@ class ChartBar extends StatelessWidget {
                 heightFactor: _dayExpensesPercentage,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(10)),
+                      color: barColor, borderRadius: BorderRadius.circular(10)),
                 ),
               )
             ],

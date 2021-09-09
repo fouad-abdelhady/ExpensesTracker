@@ -4,7 +4,9 @@ import '../models/transaction.dart';
 
 class TransactionsList extends StatelessWidget {
   final List<Transaction> transactionsList;
-  TransactionsList({required this.transactionsList});
+  Function deleteElement;
+  TransactionsList(
+      {required this.transactionsList, required this.deleteElement});
 
   get noTransactionsImage =>
       Image.asset('assets/images/searching-error.png', fit: BoxFit.cover);
@@ -35,6 +37,16 @@ class TransactionsList extends StatelessWidget {
                     ),
                     subtitle: (Text(DateFormat.yMMMMEEEEd()
                         .format(transactionsList[index].date))),
+                    trailing: IconButton(
+                      icon: Icon(
+                        Icons.delete_rounded,
+                        color: Theme.of(context).errorColor,
+                        size: 35,
+                      ),
+                      onPressed: () {
+                        deleteElement(index);
+                      },
+                    ),
                   ),
                 );
               },

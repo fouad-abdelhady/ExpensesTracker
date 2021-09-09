@@ -34,18 +34,22 @@ class Chart extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: getPerdayTransactions.map((daytrnsaction) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: ChartBar(
-                  daytrnsaction['Day'].toString(),
-                  daytrnsaction['Amount'] as double,
-                  totalTransaction == 0.0
-                      ? 0
-                      : ((daytrnsaction['Amount'] as double) /
-                          totalTransaction)),
-            );
-          }).toList(),
+          children: getPerdayTransactions
+              .map((daytrnsaction) {
+                return Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBar(
+                      daytrnsaction['Day'].toString(),
+                      daytrnsaction['Amount'] as double,
+                      totalTransaction == 0.0
+                          ? 0
+                          : ((daytrnsaction['Amount'] as double) /
+                              totalTransaction)),
+                );
+              })
+              .toList()
+              .reversed
+              .toList(),
         ),
       ),
     );

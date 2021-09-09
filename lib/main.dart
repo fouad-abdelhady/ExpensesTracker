@@ -13,8 +13,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-            primarySwatch: Colors.purple,
-            accentColor: Colors.amber,
+            primarySwatch: Colors.deepPurple,
+            accentColor: Colors.orange,
+            errorColor: Colors.orange[900],
             fontFamily: 'Quicksand',
             // ThemeData.light is the default configs for the the themedata
             textTheme: ThemeData.light().textTheme.copyWith(
@@ -52,22 +53,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Transaction> transactionsList = [
-    Transaction(id: '1', amount: 23, title: 'Coffe', date: DateTime.now()),
-    Transaction(id: '2', amount: 15, title: 'Botatos', date: DateTime.now()),
-    Transaction(id: '3', amount: 10, title: 'Biper', date: DateTime.now()),
-    Transaction(id: '4', amount: 50, title: 'Dinner', date: DateTime.now()),
-    Transaction(
-        id: '7',
-        amount: 250,
-        title: 'internet',
-        date: DateTime.now().subtract(Duration(days: 7))),
-    Transaction(
-        id: '8',
-        amount: 14,
-        title: 'Bread',
-        date: DateTime.now().subtract(Duration(days: 3))),
-  ];
+  List<Transaction> transactionsList = [];
 
   List<Transaction> get _recentTrancsactions {
     return transactionsList
@@ -76,12 +62,12 @@ class _HomePageState extends State<HomePage> {
         .toList();
   }
 
-  void addTransaction(String title, String amount) {
+  void addTransaction(String title, String amount, DateTime date) {
     Transaction transaction = Transaction(
         id: DateTime.now().toString(),
         amount: double.parse(amount),
         title: title,
-        date: DateTime.now());
+        date: date);
 
     setState(() {
       transactionsList.add(transaction);
@@ -94,6 +80,12 @@ class _HomePageState extends State<HomePage> {
         builder: (_) {
           return NewTransaction(addTransaction);
         });
+  }
+
+  void deleteTransaction(int index) {
+    setState(() {
+      transactionsList.removeAt(index);
+    });
   }
 
   @override
@@ -111,12 +103,15 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => showAddTransactionSection(context),
         child: Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Chart(_recentTrancsactions),
-            TransactionsList(transactionsList: transactionsList)
+            TransactionsList(
+                transactionsList: transactionsList,
+                deleteElement: deleteTransaction)
           ],
         ),
       ),
