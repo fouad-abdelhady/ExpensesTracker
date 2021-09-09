@@ -3,8 +3,12 @@ import 'package:expenses_app/widgets/transactions_list.dart';
 import 'package:flutter/material.dart';
 import 'models/transaction.dart';
 import 'widgets/chart.dart';
+//import 'package:flutter/services.dart';
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations(
+  //     [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(App());
 }
 
@@ -12,6 +16,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primarySwatch: Colors.deepPurple,
             accentColor: Colors.orange,
@@ -53,6 +58,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool showChart = false;
   List<Transaction> transactionsList = [];
 
   List<Transaction> get _recentTrancsactions {
@@ -90,30 +96,68 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double chartHeight = 0.32;
+    double transactionsHeight = 0.68;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    final appBar = AppBar(
+      title: Text("Expenses Tracer"),
+      actions: [
+        IconButton(
+            onPressed: () => showAddTransactionSection(context),
+            icon: Icon(Icons.add))
+      ],
+    );
+    final avaliableScreenHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+    final avaliableScreenWidth = MediaQuery.of(context).size.width -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
+    Widget _chart(double height) {
+      return Container(
+          height: avaliableScreenHeight * height,
+          child: Chart(_recentTrancsactions));
+    }
+
+    Widget _transactionsList(double height) {
+      return Container(
+        height: avaliableScreenHeight * height,
+        child: TransactionsList(
+            transactionsList: transactionsList,
+            deleteElement: deleteTransaction),
+      );
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Expenses Tracer"),
-        actions: [
-          IconButton(
-              onPressed: () => showAddTransactionSection(context),
-              icon: Icon(Icons.add))
-        ],
-      ),
+      appBar: appBar,
       floatingActionButton: FloatingActionButton(
         onPressed: () => showAddTransactionSection(context),
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Chart(_recentTrancsactions),
-            TransactionsList(
-                transactionsList: transactionsList,
-                deleteElement: deleteTransaction)
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (isLandscape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text('Show Chart'),
+                Switch(
+                    value: showChart,
+                    onChanged: (value) {
+                      setState(() {
+                        showChart = value;
+                      });
+                    }),
+              ],
+            ),
+          if (isLandscape) showChart ? _chart(0.825) : _transactionsList(0.825),
+          if (!isLandscape) _chart(chartHeight),
+          if (!isLandscape) _transactionsList(transactionsHeight)
+        ],
       ),
     );
   }
