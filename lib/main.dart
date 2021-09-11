@@ -96,10 +96,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     double chartHeight = 0.32;
     double transactionsHeight = 0.68;
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
     final appBar = AppBar(
       title: Text("Expenses Tracer"),
       actions: [
@@ -108,13 +108,11 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.add))
       ],
     );
-    final avaliableScreenHeight = MediaQuery.of(context).size.height -
+    final avaliableScreenHeight = mediaQuery.size.height -
         appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
-    final avaliableScreenWidth = MediaQuery.of(context).size.width -
-        appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
+        mediaQuery.padding.top;
 
+    var screenWidth = mediaQuery.size.width;
     Widget _chart(double height) {
       return Container(
           height: avaliableScreenHeight * height,

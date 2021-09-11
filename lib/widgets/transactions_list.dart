@@ -12,6 +12,27 @@ class TransactionsList extends StatelessWidget {
       Image.asset('assets/images/searching-error.png', fit: BoxFit.cover);
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final screenWidth = mediaQuery.size.width;
+    final mediamWidth = 600;
+    final deleteIcon = Icon(
+      Icons.delete_rounded,
+      color: Theme.of(context).errorColor,
+      size: 35,
+    );
+    Widget getIconButton(int index) => IconButton(
+          icon: deleteIcon,
+          onPressed: () {
+            deleteElement(index);
+          },
+        );
+    Widget getTextIconButton(int index) => TextButton.icon(
+          label: Text("Delete Transaction"),
+          icon: deleteIcon,
+          onPressed: () {
+            deleteElement(index);
+          },
+        );
     return Container(
       width: double.infinity,
       child: transactionsList.isEmpty
@@ -36,16 +57,9 @@ class TransactionsList extends StatelessWidget {
                     ),
                     subtitle: (Text(DateFormat.yMMMMEEEEd()
                         .format(transactionsList[index].date))),
-                    trailing: IconButton(
-                      icon: Icon(
-                        Icons.delete_rounded,
-                        color: Theme.of(context).errorColor,
-                        size: 35,
-                      ),
-                      onPressed: () {
-                        deleteElement(index);
-                      },
-                    ),
+                    trailing: screenWidth >= mediamWidth
+                        ? getTextIconButton(index)
+                        : getIconButton(index),
                   ),
                 );
               },

@@ -42,43 +42,47 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(10),
-      elevation: 6,
-      child: Container(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(labelText: 'Title'),
-              controller: titleController,
-              keyboardType: TextInputType.text,
-              onSubmitted: (_) => _submitTransaction(),
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Amount'),
-              controller: amountController,
-              keyboardType: TextInputType.number,
-              onSubmitted: (_) => _submitTransaction(),
-            ),
-            Container(
-              height: 80,
-              child: Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                    DateFormat.yMMMd().format(selectedDate),
-                    style: Theme.of(context).textTheme.headline5,
-                  )),
-                  TextButton(onPressed: getDate, child: Text('Select Date'))
-                ],
+    final softKeyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    return SingleChildScrollView(
+      child: Card(
+        margin: EdgeInsets.all(10),
+        elevation: 6,
+        child: Container(
+          padding: EdgeInsets.only(
+              top: 10, right: 10, bottom: softKeyboardHeight + 10, left: 10),
+          child: Column(
+            children: [
+              TextField(
+                decoration: InputDecoration(labelText: 'Title'),
+                controller: titleController,
+                keyboardType: TextInputType.text,
+                onSubmitted: (_) => _submitTransaction(),
               ),
-            ),
-            ElevatedButton(
-              onPressed: () => _submitTransaction(),
-              child: Text('Add Expenses'),
-            )
-          ],
+              TextField(
+                decoration: InputDecoration(labelText: 'Amount'),
+                controller: amountController,
+                keyboardType: TextInputType.number,
+                onSubmitted: (_) => _submitTransaction(),
+              ),
+              Container(
+                height: 80,
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                      DateFormat.yMMMd().format(selectedDate),
+                      style: Theme.of(context).textTheme.headline5,
+                    )),
+                    TextButton(onPressed: getDate, child: Text('Select Date'))
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () => _submitTransaction(),
+                child: Text('Add Expenses'),
+              )
+            ],
+          ),
         ),
       ),
     );
